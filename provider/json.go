@@ -4,8 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-
-	"github.com/devaloi/configo"
 )
 
 // JSON loads configuration from a JSON file.
@@ -26,5 +24,5 @@ func (p *JSON) Load() (map[string]any, error) {
 	if err := json.Unmarshal(data, &raw); err != nil {
 		return nil, fmt.Errorf("json provider: %w", err)
 	}
-	return configo.Flatten(raw), nil
+	return raw, nil
 }

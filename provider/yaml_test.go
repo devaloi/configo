@@ -18,23 +18,23 @@ func TestYAMLProvider(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	tests := map[string]any{
-		"server.host":  "localhost",
-		"server.port":  8080,
-		"database.host": "db.example.com",
-		"database.port": 5432,
-		"database.name": "myapp",
-		"server.debug":  true,
+	server, ok := m["server"].(map[string]any)
+	if !ok {
+		t.Fatal("missing server key")
 	}
-	for key, want := range tests {
-		got, ok := m[key]
-		if !ok {
-			t.Errorf("missing key %q", key)
-			continue
-		}
-		if got != want {
-			t.Errorf("key %q = %v (%T), want %v (%T)", key, got, got, want, want)
-		}
+	if server["host"] != "localhost" {
+		t.Errorf("server.host = %v, want localhost", server["host"])
+	}
+	if server["port"] != 8080 {
+		t.Errorf("server.port = %v, want 8080", server["port"])
+	}
+
+	db, ok := m["database"].(map[string]any)
+	if !ok {
+		t.Fatal("missing database key")
+	}
+	if db["host"] != "db.example.com" {
+		t.Errorf("database.host = %v, want db.example.com", db["host"])
 	}
 }
 

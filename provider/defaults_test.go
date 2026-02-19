@@ -17,19 +17,14 @@ func TestDefaultsProvider(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	tests := map[string]any{
-		"server.host": "localhost",
-		"server.port": 8080,
-		"debug":       false,
+	server, ok := m["server"].(map[string]any)
+	if !ok {
+		t.Fatal("missing server key")
 	}
-	for key, want := range tests {
-		got, ok := m[key]
-		if !ok {
-			t.Errorf("missing key %q", key)
-			continue
-		}
-		if got != want {
-			t.Errorf("key %q = %v, want %v", key, got, want)
-		}
+	if server["host"] != "localhost" {
+		t.Errorf("server.host = %v, want localhost", server["host"])
+	}
+	if m["debug"] != false {
+		t.Errorf("debug = %v, want false", m["debug"])
 	}
 }

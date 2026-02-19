@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/devaloi/configo"
 	"gopkg.in/yaml.v3"
 )
 
@@ -26,5 +25,5 @@ func (p *YAML) Load() (map[string]any, error) {
 	if err := yaml.Unmarshal(data, &raw); err != nil {
 		return nil, fmt.Errorf("yaml provider: %w", err)
 	}
-	return configo.Flatten(raw), nil
+	return raw, nil
 }

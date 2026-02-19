@@ -5,7 +5,6 @@ import (
 	"os"
 
 	"github.com/BurntSushi/toml"
-	"github.com/devaloi/configo"
 )
 
 // TOML loads configuration from a TOML file.
@@ -26,5 +25,5 @@ func (p *TOML) Load() (map[string]any, error) {
 	if err := toml.Unmarshal(data, &raw); err != nil {
 		return nil, fmt.Errorf("toml provider: %w", err)
 	}
-	return configo.Flatten(raw), nil
+	return raw, nil
 }
