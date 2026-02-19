@@ -21,7 +21,7 @@ func (p *DotEnv) Load() (map[string]any, error) {
 	if err != nil {
 		return nil, fmt.Errorf("dotenv provider: %w", err)
 	}
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	out := make(map[string]any)
 	scanner := bufio.NewScanner(f)

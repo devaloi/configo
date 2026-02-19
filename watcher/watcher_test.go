@@ -24,7 +24,7 @@ func TestWatcherDetectsChange(t *testing.T) {
 	if err := w.Start(); err != nil {
 		t.Fatal(err)
 	}
-	defer w.Stop()
+	defer func() { _ = w.Stop() }()
 
 	time.Sleep(200 * time.Millisecond)
 
@@ -55,7 +55,7 @@ func TestWatcherDebounce(t *testing.T) {
 	if err := w.Start(); err != nil {
 		t.Fatal(err)
 	}
-	defer w.Stop()
+	defer func() { _ = w.Stop() }()
 
 	time.Sleep(200 * time.Millisecond)
 

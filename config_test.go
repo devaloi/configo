@@ -2,7 +2,6 @@ package configo
 
 import (
 	"flag"
-	"os"
 	"testing"
 )
 
@@ -46,8 +45,7 @@ func TestConfigLoadTOML(t *testing.T) {
 }
 
 func TestConfigLayerPrecedence(t *testing.T) {
-	os.Setenv("TEST_SERVER_HOST", "envhost")
-	defer os.Unsetenv("TEST_SERVER_HOST")
+	t.Setenv("TEST_SERVER_HOST", "envhost")
 
 	fs := flag.NewFlagSet("test", flag.ContinueOnError)
 	fs.String("server.host", "", "host")

@@ -1,19 +1,13 @@
 package provider
 
 import (
-	"os"
 	"testing"
 )
 
 func TestEnvProvider(t *testing.T) {
-	os.Setenv("MYAPP_DATABASE_HOST", "envhost")
-	os.Setenv("MYAPP_DATABASE_PORT", "3306")
-	os.Setenv("MYAPP_DEBUG", "true")
-	defer func() {
-		os.Unsetenv("MYAPP_DATABASE_HOST")
-		os.Unsetenv("MYAPP_DATABASE_PORT")
-		os.Unsetenv("MYAPP_DEBUG")
-	}()
+	t.Setenv("MYAPP_DATABASE_HOST", "envhost")
+	t.Setenv("MYAPP_DATABASE_PORT", "3306")
+	t.Setenv("MYAPP_DEBUG", "true")
 
 	p := NewEnv("MYAPP")
 	m, err := p.Load()
@@ -39,8 +33,7 @@ func TestEnvProvider(t *testing.T) {
 }
 
 func TestEnvProviderNoMatch(t *testing.T) {
-	os.Setenv("OTHER_KEY", "value")
-	defer os.Unsetenv("OTHER_KEY")
+	t.Setenv("OTHER_KEY", "value")
 
 	p := NewEnv("MYAPP")
 	m, err := p.Load()

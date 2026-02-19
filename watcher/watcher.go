@@ -45,7 +45,7 @@ func (w *Watcher) Start() error {
 	w.fsWatcher = fw
 
 	if err := fw.Add(w.path); err != nil {
-		fw.Close()
+		_ = fw.Close()
 		return err
 	}
 

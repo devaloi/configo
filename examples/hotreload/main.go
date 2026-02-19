@@ -28,7 +28,7 @@ func main() {
 	if err := cfg.Watch(); err != nil {
 		log.Fatal(err)
 	}
-	defer cfg.StopWatch()
+	defer func() { _ = cfg.StopWatch() }()
 
 	fmt.Println("Watching config.yaml for changes. Press Ctrl+C to exit.")
 
