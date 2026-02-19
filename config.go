@@ -3,8 +3,10 @@ package configo
 import (
 	"flag"
 	"sync"
+	"time"
 
 	"github.com/devaloi/configo/provider"
+	"github.com/devaloi/configo/watcher"
 )
 
 // Config holds merged configuration data and providers.
@@ -14,6 +16,7 @@ type Config struct {
 	providers []provider.Provider
 	filePath  string
 	onChange  []func(*Config)
+	watcher   *watcher.Watcher
 }
 
 // Option configures a Config instance.
@@ -120,6 +123,37 @@ func (c *Config) OnChange(fn func(*Config)) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	c.onChange = append(c.onChange, fn)
+}
+
+// Watch starts watching the config file for changes.
+// On change, it reloads and notifies all OnChange subscribers.
+func (c *Config) Watch() error {
+	if c.filePath == "" {
+		return nil
+	}
+	w := watcher.New(c.filePath, 500*time.Millisecond)
+	w.OnChange(func() {
+		if err := c.Load(); err != nil {
+			return
+		}
+		c.mu.RLock()
+		handlers := make([]func(*Config), len(c.onChange))
+		copy(handlers, c.onChange)
+		c.mu.RUnlock()
+		for _, fn := range handlers {
+			fn(c)
+		}
+	})
+	c.watcher = w
+	return w.Start()
+}
+
+// StopWatch stops the file watcher.
+func (c *Config) StopWatch() error {
+	if c.watcher != nil {
+		return c.watcher.Stop()
+	}
+	return nil
 }
 
 func hasExt(path string, exts ...string) bool {
