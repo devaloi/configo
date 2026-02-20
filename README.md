@@ -1,6 +1,7 @@
 # configo
 
-[![Go](https://img.shields.io/badge/Go-1.26-blue.svg)](https://go.dev)
+[![CI](https://github.com/devaloi/configo/actions/workflows/ci.yml/badge.svg)](https://github.com/devaloi/configo/actions/workflows/ci.yml)
+[![Go](https://img.shields.io/badge/Go-1.25-blue.svg)](https://go.dev)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 A layered configuration library for Go supporting env vars, YAML, JSON, TOML with type-safe generics access, struct binding, validation, and hot reload.
